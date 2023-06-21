@@ -117,3 +117,23 @@ ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
 ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md
 ios/Runner/Base.lproj/LaunchScreen.storyboard
 ios/Runner/Base.lproj/Main.storyboard
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+tabletop_rpg_dice_calculator/local.properties
+.gitattributes
+gradlew.bat
+local.properties
+android/app/gradlew
+android/app/gradle/wrapper/gradle-wrapper.properties
+app/src/main/java/tabletop_rpg_dice_calculator/App.java
+app/src/test/java/tabletop_rpg_dice_calculator/AppTest.java
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+tabletop_rpg_dice_calculator/gradlew
+tabletop_rpg_dice_calculator/gradle/wrapper/gradle-wrapper.jar
+tabletop_rpg_dice_calculator/gradle/wrapper/gradle-wrapper.properties
