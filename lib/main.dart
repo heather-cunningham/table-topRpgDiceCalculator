@@ -19,7 +19,6 @@ Future<void> main() async {
   runApp(const TableTopRpgDiceCalculatorApp());
 }
 
-/// TableTopRpgDiceCalculatorApp is the Main Application.
 class TableTopRpgDiceCalculatorApp extends StatelessWidget {
   /// Default Constructor
   const TableTopRpgDiceCalculatorApp({super.key});
@@ -27,19 +26,19 @@ class TableTopRpgDiceCalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: CameraExampleHome(),
+      home: TTRpgDiceCalculatorHome(),
     );
   }
 }
 
-/// Camera example home widget.
-class CameraExampleHome extends StatefulWidget {
+/// TTRpgDiceCalculator home widget.
+class TTRpgDiceCalculatorHome extends StatefulWidget {
   /// Default Constructor
-  const CameraExampleHome({super.key});
+  const TTRpgDiceCalculatorHome({super.key});
 
   @override
-  State<CameraExampleHome> createState() {
-    return _CameraExampleHomeState();
+  State<TTRpgDiceCalculatorHome> createState() {
+    return _TTRpgDiceCalculatorHomeState();
   }
 }
 
@@ -48,26 +47,26 @@ void _logError(String code, String? message) {
   print('Error: $code${message == null ? '' : '\nError Message: $message'}');
 }
 
-class _CameraExampleHomeState extends State<CameraExampleHome> with
+class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     WidgetsBindingObserver, TickerProviderStateMixin {
 
   CameraController? controller;
   XFile? imageFile;
-  XFile? videoFile;
+  String imgPath = "";
 
-  double _minAvailableExposureOffset = 0.0;
-  double _maxAvailableExposureOffset = 0.0;
-  double _currentExposureOffset = 0.0;
-  late AnimationController _flashModeControlRowAnimationController;
-  late Animation<double> _flashModeControlRowAnimation;
-  late AnimationController _exposureModeControlRowAnimationController;
-  late Animation<double> _exposureModeControlRowAnimation;
-  late AnimationController _focusModeControlRowAnimationController;
-  late Animation<double> _focusModeControlRowAnimation;
-  double _minAvailableZoom = 1.0;
-  double _maxAvailableZoom = 1.0;
-  double _currentScale = 1.0;
-  double _baseScale = 1.0;
+  // double _minAvailableExposureOffset = 0.0;
+  // double _maxAvailableExposureOffset = 0.0;
+  // double _currentExposureOffset = 0.0;
+  // late AnimationController _flashModeControlRowAnimationController;
+  // late Animation<double> _flashModeControlRowAnimation;
+  // late AnimationController _exposureModeControlRowAnimationController;
+  // late Animation<double> _exposureModeControlRowAnimation;
+  // late AnimationController _focusModeControlRowAnimationController;
+  // late Animation<double> _focusModeControlRowAnimation;
+  // double _minAvailableZoom = 1.0;
+  // double _maxAvailableZoom = 1.0;
+  // double _currentScale = 1.0;
+  // double _baseScale = 1.0;
 
   // Counting pointers (number of user fingers on screen)
   int _pointers = 0;
@@ -77,37 +76,37 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    _flashModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _flashModeControlRowAnimation = CurvedAnimation(
-      parent: _flashModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
-    _exposureModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _exposureModeControlRowAnimation = CurvedAnimation(
-      parent: _exposureModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
-    _focusModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _focusModeControlRowAnimation = CurvedAnimation(
-      parent: _focusModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
+    // _flashModeControlRowAnimationController = AnimationController(
+    //   duration: const Duration(milliseconds: 300),
+    //   vsync: this,
+    // );
+    // _flashModeControlRowAnimation = CurvedAnimation(
+    //   parent: _flashModeControlRowAnimationController,
+    //   curve: Curves.easeInCubic,
+    // );
+    // _exposureModeControlRowAnimationController = AnimationController(
+    //   duration: const Duration(milliseconds: 300),
+    //   vsync: this,
+    // );
+    // _exposureModeControlRowAnimation = CurvedAnimation(
+    //   parent: _exposureModeControlRowAnimationController,
+    //   curve: Curves.easeInCubic,
+    // );
+    // _focusModeControlRowAnimationController = AnimationController(
+    //   duration: const Duration(milliseconds: 300),
+    //   vsync: this,
+    // );
+    // _focusModeControlRowAnimation = CurvedAnimation(
+    //   parent: _focusModeControlRowAnimationController,
+    //   curve: Curves.easeInCubic,
+    // );
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _flashModeControlRowAnimationController.dispose();
-    _exposureModeControlRowAnimationController.dispose();
+    /*_flashModeControlRowAnimationController.dispose();
+    _exposureModeControlRowAnimationController.dispose();*/
     super.dispose();
   }
 
@@ -159,7 +158,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
             ),
           ),
           _captureControlRowWidget(),
-          _modeControlRowWidget(),
+          /*_modeControlRowWidget(),*/
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
@@ -197,8 +196,8 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
               builder: (BuildContext context, BoxConstraints constraints) {
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onScaleStart: _handleScaleStart,
-                  onScaleUpdate: _handleScaleUpdate,
+                  /*onScaleStart: _handleScaleStart,
+                  onScaleUpdate: _handleScaleUpdate,*/
                   onTapDown: (TapDownDetails details) =>
                       onViewFinderTap(details, constraints),
                 );
@@ -208,11 +207,11 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
     }
   }
 
-  void _handleScaleStart(ScaleStartDetails details) {
+  /*void _handleScaleStart(ScaleStartDetails details) {
     _baseScale = _currentScale;
-  }
+  }*/
 
-  Future<void> _handleScaleUpdate(ScaleUpdateDetails details) async {
+  /*Future<void> _handleScaleUpdate(ScaleUpdateDetails details) async {
     // When there are not exactly two fingers on screen don't scale
     if (controller == null || _pointers != 2) {
       return;
@@ -223,6 +222,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
 
     await controller!.setZoomLevel(_currentScale);
   }
+*/
 
   /// Display the thumbnail of the captured image or video.
   Widget _thumbnailWidget() {
@@ -254,7 +254,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
   }
 
   /// Display a bar with buttons to change the flash and exposure modes
-  Widget _modeControlRowWidget() {
+  /*Widget _modeControlRowWidget() {
     return Column(
       children: <Widget>[
         Row(
@@ -299,9 +299,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
         _focusModeControlRowWidget(),
       ],
     );
-  }
+  }*/
 
-  Widget _flashModeControlRowWidget() {
+  /*Widget _flashModeControlRowWidget() {
     return SizeTransition(
       sizeFactor: _flashModeControlRowAnimation,
       child: ClipRect(
@@ -348,9 +348,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
         ),
       ),
     );
-  }
+  }*/
 
-  Widget _exposureModeControlRowWidget() {
+  /*Widget _exposureModeControlRowWidget() {
     final ButtonStyle styleAuto = TextButton.styleFrom(
       // TODO(darrenaustin): Migrate to new API once it lands in stable: https://github.com/flutter/flutter/issues/105724
       // ignore: deprecated_member_use
@@ -435,9 +435,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
         ),
       ),
     );
-  }
+  }*/
 
-  Widget _focusModeControlRowWidget() {
+  /*Widget _focusModeControlRowWidget() {
     final ButtonStyle styleAuto = TextButton.styleFrom(
       // TODO(darrenaustin): Migrate to new API once it lands in stable: https://github.com/flutter/flutter/issues/105724
       // ignore: deprecated_member_use
@@ -493,7 +493,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
         ),
       ),
     );
-  }
+  }*/
 
   /// Display the control bar with buttons to take pictures and pause image capture preview
   Widget _captureControlRowWidget() {
@@ -614,7 +614,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
 
     try {
       await cameraController.initialize();
-      await Future.wait(<Future<Object?>>[
+      /*await Future.wait(<Future<Object?>>[
         // The exposure mode is currently not supported on the web.
         ...!kIsWeb
             ? <Future<Object?>>[
@@ -631,7 +631,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
         cameraController
             .getMinZoomLevel()
             .then((double value) => _minAvailableZoom = value),
-      ]);
+      ]);*/
     } on CameraException catch (e) {
       switch (e.code) {
         case 'CameraAccessDenied':
@@ -644,17 +644,6 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
         case 'CameraAccessRestricted':
         // iOS only
           showInSnackBar('Camera access is restricted.');
-          break;
-        case 'AudioAccessDenied':
-          showInSnackBar('You have denied audio access.');
-          break;
-        case 'AudioAccessDeniedWithoutPrompt':
-        // iOS only
-          showInSnackBar('Please go to Settings app to enable audio access.');
-          break;
-        case 'AudioAccessRestricted':
-        // iOS only
-          showInSnackBar('Audio access is restricted.');
           break;
         default:
           _showCameraException(e);
@@ -682,7 +671,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
     });
   }
 
-  void onFlashModeButtonPressed() {
+ /* void onFlashModeButtonPressed() {
     if (_flashModeControlRowAnimationController.value == 1) {
       _flashModeControlRowAnimationController.reverse();
     } else {
@@ -690,9 +679,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _exposureModeControlRowAnimationController.reverse();
       _focusModeControlRowAnimationController.reverse();
     }
-  }
+  }*/
 
-  void onExposureModeButtonPressed() {
+  /*void onExposureModeButtonPressed() {
     if (_exposureModeControlRowAnimationController.value == 1) {
       _exposureModeControlRowAnimationController.reverse();
     } else {
@@ -700,9 +689,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _flashModeControlRowAnimationController.reverse();
       _focusModeControlRowAnimationController.reverse();
     }
-  }
+  }*/
 
-  void onFocusModeButtonPressed() {
+ /* void onFocusModeButtonPressed() {
     if (_focusModeControlRowAnimationController.value == 1) {
       _focusModeControlRowAnimationController.reverse();
     } else {
@@ -710,9 +699,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _flashModeControlRowAnimationController.reverse();
       _exposureModeControlRowAnimationController.reverse();
     }
-  }
+  }*/
 
-  Future<void> onCaptureOrientationLockButtonPressed() async {
+  /*Future<void> onCaptureOrientationLockButtonPressed() async {
     try {
       if (controller != null) {
         final CameraController cameraController = controller!;
@@ -729,33 +718,34 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _showCameraException(e);
     }
   }
+*/
 
-  void onSetFlashModeButtonPressed(FlashMode mode) {
+ /* void onSetFlashModeButtonPressed(FlashMode mode) {
     setFlashMode(mode).then((_) {
       if (mounted) {
         setState(() {});
       }
       showInSnackBar('Flash mode set to ${mode.toString().split('.').last}');
     });
-  }
+  }*/
 
-  void onSetExposureModeButtonPressed(ExposureMode mode) {
+  /*void onSetExposureModeButtonPressed(ExposureMode mode) {
     setExposureMode(mode).then((_) {
       if (mounted) {
         setState(() {});
       }
       showInSnackBar('Exposure mode set to ${mode.toString().split('.').last}');
     });
-  }
+  }*/
 
-  void onSetFocusModeButtonPressed(FocusMode mode) {
+  /*void onSetFocusModeButtonPressed(FocusMode mode) {
     setFocusMode(mode).then((_) {
       if (mounted) {
         setState(() {});
       }
       showInSnackBar('Focus mode set to ${mode.toString().split('.').last}');
     });
-  }
+  }*/
 
   Future<void> onPausePreviewButtonPressed() async {
     final CameraController? cameraController = controller;
@@ -776,7 +766,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
     }
   }
 
-  Future<void> setFlashMode(FlashMode mode) async {
+  /*Future<void> setFlashMode(FlashMode mode) async {
     if (controller == null) {
       return;
     }
@@ -787,9 +777,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _showCameraException(e);
       rethrow;
     }
-  }
+  }*/
 
-  Future<void> setExposureMode(ExposureMode mode) async {
+  /*Future<void> setExposureMode(ExposureMode mode) async {
     if (controller == null) {
       return;
     }
@@ -800,9 +790,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _showCameraException(e);
       rethrow;
     }
-  }
+  }*/
 
-  Future<void> setExposureOffset(double offset) async {
+ /* Future<void> setExposureOffset(double offset) async {
     if (controller == null) {
       return;
     }
@@ -816,9 +806,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _showCameraException(e);
       rethrow;
     }
-  }
+  }*/
 
-  Future<void> setFocusMode(FocusMode mode) async {
+  /*Future<void> setFocusMode(FocusMode mode) async {
     if (controller == null) {
       return;
     }
@@ -829,7 +819,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> with
       _showCameraException(e);
       rethrow;
     }
-  }
+  }*/
 
   Future<XFile?> takePicture() async {
     final CameraController? cameraController = controller;
