@@ -47,22 +47,14 @@ void _logError(String code, String? message) {
   print('Error: $code${message == null ? '' : '\nError Message: $message'}');
 }
 
-class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
-    WidgetsBindingObserver, TickerProviderStateMixin {
-
+class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   CameraController? controller;
   XFile? imageFile;
   String imgPath = "";
 
-  // double _minAvailableExposureOffset = 0.0;
-  // double _maxAvailableExposureOffset = 0.0;
-  // double _currentExposureOffset = 0.0;
   // late AnimationController _flashModeControlRowAnimationController;
   // late Animation<double> _flashModeControlRowAnimation;
-  // late AnimationController _exposureModeControlRowAnimationController;
-  // late Animation<double> _exposureModeControlRowAnimation;
-  // late AnimationController _focusModeControlRowAnimationController;
-  // late Animation<double> _focusModeControlRowAnimation;
   // double _minAvailableZoom = 1.0;
   // double _maxAvailableZoom = 1.0;
   // double _currentScale = 1.0;
@@ -84,29 +76,13 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     //   parent: _flashModeControlRowAnimationController,
     //   curve: Curves.easeInCubic,
     // );
-    // _exposureModeControlRowAnimationController = AnimationController(
-    //   duration: const Duration(milliseconds: 300),
-    //   vsync: this,
-    // );
-    // _exposureModeControlRowAnimation = CurvedAnimation(
-    //   parent: _exposureModeControlRowAnimationController,
-    //   curve: Curves.easeInCubic,
-    // );
-    // _focusModeControlRowAnimationController = AnimationController(
-    //   duration: const Duration(milliseconds: 300),
-    //   vsync: this,
-    // );
-    // _focusModeControlRowAnimation = CurvedAnimation(
-    //   parent: _focusModeControlRowAnimationController,
-    //   curve: Curves.easeInCubic,
-    // );
-  }
+  } // end initState()
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    /*_flashModeControlRowAnimationController.dispose();
-    _exposureModeControlRowAnimationController.dispose();*/
+    /*_flashModeControlRowAnimationController.dispose();*/
+    controller?.dispose();
     super.dispose();
   }
 
@@ -123,9 +99,9 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     if (state == AppLifecycleState.inactive) {
       cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      _initializeCameraController(cameraController.description);
+      _initializeCameraController(/*cameraController.description*/);
     }
-  }
+  } // end didChangeAppLifecycleState()
   // #enddocregion AppLifecycle
 
   @override
@@ -142,8 +118,7 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
               decoration: BoxDecoration(
                 color: Colors.black,
                 border: Border.all(
-                  color:
-                  controller != null && controller!.value.isTakingPicture
+                  color: controller != null && controller!.value.isTakingPicture
                       ? Colors.greenAccent
                       : Colors.grey,
                   width: 3.0,
@@ -171,7 +146,7 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
         ],
       ),
     );
-  }
+  } // end build()
 
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget() {
@@ -194,14 +169,14 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
           controller!,
           child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  /*onScaleStart: _handleScaleStart,
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              /*onScaleStart: _handleScaleStart,
                   onScaleUpdate: _handleScaleUpdate,*/
-                  onTapDown: (TapDownDetails details) =>
-                      onViewFinderTap(details, constraints),
-                );
-              }),
+              onTapDown: (TapDownDetails details) =>
+                  onViewFinderTap(details, constraints),
+            );
+          }),
         ),
       );
     }
@@ -238,14 +213,14 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
               SizedBox(
                 width: 64.0,
                 height: 64.0,
-                child:
-                    (
-                      // The captured image on the web contains a network-accessible URL
-                      // pointing to a location within the browser. It may be displayed
-                      // either with Image.network or Image.memory after loading the image
-                      // bytes to memory.
-                      kIsWeb ? Image.network(imageFile!.path) : Image.file(File(imageFile!.path))
-                    ),
+                child: (
+                    // The captured image on the web contains a network-accessible URL
+                    // pointing to a location within the browser. It may be displayed
+                    // either with Image.network or Image.memory after loading the image
+                    // bytes to memory.
+                    kIsWeb
+                        ? Image.network(imageFile!.path)
+                        : Image.file(File(imageFile!.path))),
               ),
           ],
         ),
@@ -254,52 +229,23 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
   }
 
   /// Display a bar with buttons to change the flash and exposure modes
-  /*Widget _modeControlRowWidget() {
+  Widget _modeControlRowWidget() {
     return Column(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
+          children: const <Widget>[
             IconButton(
-              icon: const Icon(Icons.flash_on),
+              icon: Icon(Icons.flash_on),
               color: Colors.blue,
-              onPressed: controller != null ? onFlashModeButtonPressed : null,
-            ),
-            // The exposure and focus mode are currently not supported on the web.
-            ...!kIsWeb
-                ? <Widget>[
-              IconButton(
-                icon: const Icon(Icons.exposure),
-                color: Colors.blue,
-                onPressed: controller != null
-                    ? onExposureModeButtonPressed
-                    : null,
-              ),
-              IconButton(
-                icon: const Icon(Icons.filter_center_focus),
-                color: Colors.blue,
-                onPressed:
-                controller != null ? onFocusModeButtonPressed : null,
-              )
-            ]
-                : <Widget>[],
-            IconButton(
-              icon: Icon(controller?.value.isCaptureOrientationLocked ?? false
-                  ? Icons.screen_lock_rotation
-                  : Icons.screen_rotation),
-              color: Colors.blue,
-              onPressed: controller != null
-                  ? onCaptureOrientationLockButtonPressed
-                  : null,
+              onPressed: /*controller != null ? onFlashModeButtonPressed :*/ null,
             ),
           ],
         ),
-        _flashModeControlRowWidget(),
-        _exposureModeControlRowWidget(),
-        _focusModeControlRowWidget(),
+        //_flashModeControlRowWidget(),
       ],
     );
-  }*/
+  }
 
   /*Widget _flashModeControlRowWidget() {
     return SizeTransition(
@@ -350,151 +296,6 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     );
   }*/
 
-  /*Widget _exposureModeControlRowWidget() {
-    final ButtonStyle styleAuto = TextButton.styleFrom(
-      // TODO(darrenaustin): Migrate to new API once it lands in stable: https://github.com/flutter/flutter/issues/105724
-      // ignore: deprecated_member_use
-      primary: controller?.value.exposureMode == ExposureMode.auto
-          ? Colors.orange
-          : Colors.blue,
-    );
-    final ButtonStyle styleLocked = TextButton.styleFrom(
-      // TODO(darrenaustin): Migrate to new API once it lands in stable: https://github.com/flutter/flutter/issues/105724
-      // ignore: deprecated_member_use
-      primary: controller?.value.exposureMode == ExposureMode.locked
-          ? Colors.orange
-          : Colors.blue,
-    );
-
-    return SizeTransition(
-      sizeFactor: _exposureModeControlRowAnimation,
-      child: ClipRect(
-        child: Container(
-          color: Colors.grey.shade50,
-          child: Column(
-            children: <Widget>[
-              const Center(
-                child: Text('Exposure Mode'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  TextButton(
-                    style: styleAuto,
-                    onPressed: controller != null
-                        ? () =>
-                        onSetExposureModeButtonPressed(ExposureMode.auto)
-                        : null,
-                    onLongPress: () {
-                      if (controller != null) {
-                        controller!.setExposurePoint(null);
-                        showInSnackBar('Resetting exposure point');
-                      }
-                    },
-                    child: const Text('AUTO'),
-                  ),
-                  TextButton(
-                    style: styleLocked,
-                    onPressed: controller != null
-                        ? () =>
-                        onSetExposureModeButtonPressed(ExposureMode.locked)
-                        : null,
-                    child: const Text('LOCKED'),
-                  ),
-                  TextButton(
-                    style: styleLocked,
-                    onPressed: controller != null
-                        ? () => controller!.setExposureOffset(0.0)
-                        : null,
-                    child: const Text('RESET OFFSET'),
-                  ),
-                ],
-              ),
-              const Center(
-                child: Text('Exposure Offset'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(_minAvailableExposureOffset.toString()),
-                  Slider(
-                    value: _currentExposureOffset,
-                    min: _minAvailableExposureOffset,
-                    max: _maxAvailableExposureOffset,
-                    label: _currentExposureOffset.toString(),
-                    onChanged: _minAvailableExposureOffset ==
-                        _maxAvailableExposureOffset
-                        ? null
-                        : setExposureOffset,
-                  ),
-                  Text(_maxAvailableExposureOffset.toString()),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
-
-  /*Widget _focusModeControlRowWidget() {
-    final ButtonStyle styleAuto = TextButton.styleFrom(
-      // TODO(darrenaustin): Migrate to new API once it lands in stable: https://github.com/flutter/flutter/issues/105724
-      // ignore: deprecated_member_use
-      primary: controller?.value.focusMode == FocusMode.auto
-          ? Colors.orange
-          : Colors.blue,
-    );
-    final ButtonStyle styleLocked = TextButton.styleFrom(
-      // TODO(darrenaustin): Migrate to new API once it lands in stable: https://github.com/flutter/flutter/issues/105724
-      // ignore: deprecated_member_use
-      primary: controller?.value.focusMode == FocusMode.locked
-          ? Colors.orange
-          : Colors.blue,
-    );
-
-    return SizeTransition(
-      sizeFactor: _focusModeControlRowAnimation,
-      child: ClipRect(
-        child: Container(
-          color: Colors.grey.shade50,
-          child: Column(
-            children: <Widget>[
-              const Center(
-                child: Text('Focus Mode'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  TextButton(
-                    style: styleAuto,
-                    onPressed: controller != null
-                        ? () => onSetFocusModeButtonPressed(FocusMode.auto)
-                        : null,
-                    onLongPress: () {
-                      if (controller != null) {
-                        controller!.setFocusPoint(null);
-                      }
-                      showInSnackBar('Resetting focus point');
-                    },
-                    child: const Text('AUTO'),
-                  ),
-                  TextButton(
-                    style: styleLocked,
-                    onPressed: controller != null
-                        ? () => onSetFocusModeButtonPressed(FocusMode.locked)
-                        : null,
-                    child: const Text('LOCKED'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
-
   /// Display the control bar with buttons to take pictures and pause image capture preview
   Widget _captureControlRowWidget() {
     final CameraController? cameraController = controller;
@@ -505,19 +306,19 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
         IconButton(
           icon: const Icon(Icons.camera_alt),
           color: Colors.blue,
-          onPressed: cameraController != null &&
-              cameraController.value.isInitialized
-              ? onTakePictureButtonPressed
-              : null,
+          onPressed:
+              cameraController != null && cameraController.value.isInitialized
+                  ? onTakePictureButtonPressed
+                  : null,
         ),
         IconButton(
           icon: const Icon(Icons.pause_presentation),
           color:
-          cameraController != null && cameraController.value.isPreviewPaused
-              ? Colors.red
-              : Colors.blue,
+              cameraController != null && cameraController.value.isPreviewPaused
+                  ? Colors.red
+                  : Colors.blue,
           onPressed:
-          cameraController == null ? null : onPausePreviewButtonPressed,
+              cameraController == null ? null : onPausePreviewButtonPressed,
         ),
       ],
     );
@@ -525,7 +326,7 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
 
   /// Display a row to select the camera (or a message if no camera is available).
   Widget _cameraTogglesRowWidget() {
-    final List<Widget> toggles = <Widget>[];
+    //final List<Widget> toggles = <Widget>[];
 
     /*void onChanged(CameraDescription? description) {
       if (description == null) {
@@ -541,15 +342,13 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
       });
       return const Text('No camera found');
     } else {
-      return const Center(
-        child: Icon(Icons.camera_alt)
-      );
+      return const Center(child: Icon(Icons.camera_alt));
       /*for (final CameraDescription cameraDescription in _cameras) {
         toggles.add(
           SizedBox(
             width: 90.0,
             child: RadioListTile<CameraDescription>(
-              title: Icon(Icons.camera*//*getCameraLensIcon(cameraDescription.lensDirection)*//*),
+              title: Icon(Icons.camera*/ /*getCameraLensIcon(cameraDescription.lensDirection)*/ /*),
               groupValue: controller?.description,
               value: cameraDescription,
               onChanged: onChanged,
@@ -592,13 +391,9 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     }
   }*/
 
-  Future<void> _initializeCameraController(CameraDescription cameraDescription) async {
-    final CameraController cameraController = CameraController(
-      cameraDescription,
-      kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-
+  Future<void> _initializeCameraController() async {
+    final CameraController cameraController =
+        CameraController(_cameras[0], ResolutionPreset.max);
     controller = cameraController;
 
     // If the controller is updated then update the UI.
@@ -615,16 +410,6 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     try {
       await cameraController.initialize();
       /*await Future.wait(<Future<Object?>>[
-        // The exposure mode is currently not supported on the web.
-        ...!kIsWeb
-            ? <Future<Object?>>[
-          cameraController.getMinExposureOffset().then(
-                  (double value) => _minAvailableExposureOffset = value),
-          cameraController
-              .getMaxExposureOffset()
-              .then((double value) => _maxAvailableExposureOffset = value)
-        ]
-            : <Future<Object?>>[],
         cameraController
             .getMaxZoomLevel()
             .then((double value) => _maxAvailableZoom = value),
@@ -638,11 +423,11 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
           showInSnackBar('You have denied camera access.');
           break;
         case 'CameraAccessDeniedWithoutPrompt':
-        // iOS only
+          // iOS only
           showInSnackBar('Please go to Settings app to enable camera access.');
           break;
         case 'CameraAccessRestricted':
-        // iOS only
+          // iOS only
           showInSnackBar('Camera access is restricted.');
           break;
         default:
@@ -671,7 +456,7 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     });
   }
 
- /* void onFlashModeButtonPressed() {
+  /* void onFlashModeButtonPressed() {
     if (_flashModeControlRowAnimationController.value == 1) {
       _flashModeControlRowAnimationController.reverse();
     } else {
@@ -681,69 +466,12 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
     }
   }*/
 
-  /*void onExposureModeButtonPressed() {
-    if (_exposureModeControlRowAnimationController.value == 1) {
-      _exposureModeControlRowAnimationController.reverse();
-    } else {
-      _exposureModeControlRowAnimationController.forward();
-      _flashModeControlRowAnimationController.reverse();
-      _focusModeControlRowAnimationController.reverse();
-    }
-  }*/
-
- /* void onFocusModeButtonPressed() {
-    if (_focusModeControlRowAnimationController.value == 1) {
-      _focusModeControlRowAnimationController.reverse();
-    } else {
-      _focusModeControlRowAnimationController.forward();
-      _flashModeControlRowAnimationController.reverse();
-      _exposureModeControlRowAnimationController.reverse();
-    }
-  }*/
-
-  /*Future<void> onCaptureOrientationLockButtonPressed() async {
-    try {
-      if (controller != null) {
-        final CameraController cameraController = controller!;
-        if (cameraController.value.isCaptureOrientationLocked) {
-          await cameraController.unlockCaptureOrientation();
-          showInSnackBar('Capture orientation unlocked');
-        } else {
-          await cameraController.lockCaptureOrientation();
-          showInSnackBar(
-              'Capture orientation locked to ${cameraController.value.lockedCaptureOrientation.toString().split('.').last}');
-        }
-      }
-    } on CameraException catch (e) {
-      _showCameraException(e);
-    }
-  }
-*/
-
- /* void onSetFlashModeButtonPressed(FlashMode mode) {
+  /* void onSetFlashModeButtonPressed(FlashMode mode) {
     setFlashMode(mode).then((_) {
       if (mounted) {
         setState(() {});
       }
       showInSnackBar('Flash mode set to ${mode.toString().split('.').last}');
-    });
-  }*/
-
-  /*void onSetExposureModeButtonPressed(ExposureMode mode) {
-    setExposureMode(mode).then((_) {
-      if (mounted) {
-        setState(() {});
-      }
-      showInSnackBar('Exposure mode set to ${mode.toString().split('.').last}');
-    });
-  }*/
-
-  /*void onSetFocusModeButtonPressed(FocusMode mode) {
-    setFocusMode(mode).then((_) {
-      if (mounted) {
-        setState(() {});
-      }
-      showInSnackBar('Focus mode set to ${mode.toString().split('.').last}');
     });
   }*/
 
@@ -773,48 +501,6 @@ class _TTRpgDiceCalculatorHomeState extends State<TTRpgDiceCalculatorHome> with
 
     try {
       await controller!.setFlashMode(mode);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      rethrow;
-    }
-  }*/
-
-  /*Future<void> setExposureMode(ExposureMode mode) async {
-    if (controller == null) {
-      return;
-    }
-
-    try {
-      await controller!.setExposureMode(mode);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      rethrow;
-    }
-  }*/
-
- /* Future<void> setExposureOffset(double offset) async {
-    if (controller == null) {
-      return;
-    }
-
-    setState(() {
-      _currentExposureOffset = offset;
-    });
-    try {
-      offset = await controller!.setExposureOffset(offset);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      rethrow;
-    }
-  }*/
-
-  /*Future<void> setFocusMode(FocusMode mode) async {
-    if (controller == null) {
-      return;
-    }
-
-    try {
-      await controller!.setFocusMode(mode);
     } on CameraException catch (e) {
       _showCameraException(e);
       rethrow;
