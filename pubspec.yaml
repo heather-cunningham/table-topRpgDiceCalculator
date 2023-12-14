@@ -37,6 +37,8 @@ dependencies:
   # img source path dependencies
   path_provider: ^2.0.9
   path: ^1.8.0
+  # Tesseract OCR
+  flutter_tesseract_ocr: ^0.4.20
 
 dev_dependencies:
   flutter_test:
