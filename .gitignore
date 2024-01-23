@@ -117,3 +117,12 @@ ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
 ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md
 ios/Runner/Base.lproj/LaunchScreen.storyboard
 ios/Runner/Base.lproj/Main.storyboard
+
+# Git, more Gradle, more Android, and Java app files to ignore
+*.gitattributes
+gradlew.bat
+local.properties
+android/
+gradle/
+tabletop_rpg_dice_calculator/gradlew
+app/
