@@ -38,8 +38,8 @@ class TTRPGDiceCalculatorHomePage extends StatefulWidget {
 }
 
 class _TTRPGDiceCalculatorHomePageState extends State<TTRPGDiceCalculatorHomePage> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  late CameraController _cameraController;
+  late Future<void> _initCameraContlrFuture;
 
   @override
   void initState() {
@@ -50,8 +50,8 @@ class _TTRPGDiceCalculatorHomePageState extends State<TTRPGDiceCalculatorHomePag
   Future<void> initializeCamera() async {
     WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
-    _controller = CameraController(cameras[0], ResolutionPreset.medium);
-    _initializeControllerFuture = _controller.initialize();
+    _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
+    _initCameraContlrFuture = _cameraController.initialize();
   }
 
   @override
@@ -77,10 +77,10 @@ class _TTRPGDiceCalculatorHomePageState extends State<TTRPGDiceCalculatorHomePag
               icon: Icon(Icons.camera_alt_rounded),
             ),
             FutureBuilder<void>(
-              future: _initializeControllerFuture,
+              future: _initCameraContlrFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return CameraPreview(_controller);
+                  return CameraPreview(_cameraController);
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -94,7 +94,7 @@ class _TTRPGDiceCalculatorHomePageState extends State<TTRPGDiceCalculatorHomePag
 
   @override
   void dispose() {
-    _controller.dispose();
+    _cameraController.dispose();
     super.dispose();
   }
 
