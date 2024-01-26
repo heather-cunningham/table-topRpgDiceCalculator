@@ -12,7 +12,7 @@ import 'package:tabletop_rpg_dice_calculator/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const TableTopRPGDiceCalculatorApp());
+    await tester.pumpWidget(const TTRPGDiceCalculatorApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

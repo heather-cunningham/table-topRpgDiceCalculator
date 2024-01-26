@@ -1,78 +1,101 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
+// import 'package:path/path.dart';
+// import 'package:path_provider/path_provider.dart';
 
 void main() {
-  runApp(const TableTopRPGDiceCalculatorApp());
+  runApp(const TTRPGDiceCalculatorApp());
 }
 
-class TableTopRPGDiceCalculatorApp extends StatelessWidget {
-  const TableTopRPGDiceCalculatorApp({super.key});
+class TTRPGDiceCalculatorApp extends StatelessWidget {
+  const TTRPGDiceCalculatorApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Table-Top RPG Dice Calculator',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const TTRPGDiceCalculatorHomePage(title: 'TT-RPG Dice Calculator Home'),
+      home: const TTRPGDiceCalculatorHomePage(
+          title: 'TT-RPG Dice Calculator Home'),
     );
   }
 }
 
 class TTRPGDiceCalculatorHomePage extends StatefulWidget {
-  // constructor
-  const TTRPGDiceCalculatorHomePage({super.key, required this.title});
-
   final String title;
 
+  // constructor
+  const TTRPGDiceCalculatorHomePage({
+    super.key,
+    required this.title,
+  });
+
   @override
-  State<TTRPGDiceCalculatorHomePage> createState() => _TTRPGDiceCalculatorHomePageState();
+  State<TTRPGDiceCalculatorHomePage> createState() =>
+      _TTRPGDiceCalculatorHomePageState();
 }
 
 class _TTRPGDiceCalculatorHomePageState extends State<TTRPGDiceCalculatorHomePage> {
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeCamera();
+  }
+
+  Future<void> initializeCamera() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    _controller = CameraController(cameras[0], ResolutionPreset.medium);
+    _initializeControllerFuture = _controller.initialize();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Center(
         child: Column(
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Press the Camera button below to take a picture of your dice.'
+                    '\n\n'
+                    '(Ensure your camera lens is open.)',
+                style: Theme.of(context).textTheme.headline6,
+                textAlign: TextAlign.center,
+              ),
             ),
-            Text(
-              '',
-              style: Theme.of(context).textTheme.headline4,
+            const IconButton(
+              onPressed: null,
+              iconSize: 120,
+              icon: Icon(Icons.camera_alt_rounded),
+            ),
+            FutureBuilder<void>(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return CameraPreview(_controller);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
             ),
           ],
         ),
       ),
-      floatingActionButton: const FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
     );
+  }// end build()
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
-}
+
+}//end class _TTRPGDiceCalculatorHomePageState
