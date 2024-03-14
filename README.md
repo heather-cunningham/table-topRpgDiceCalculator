@@ -1,6 +1,6 @@
 # tabletop_rpg_dice_calculator
 
-An app to sum table top rpg dice values, especially for d20 systems.
+WIP: An app to sum table top rpg dice values, especially for d20 systems.
 
 ## Getting Started
 
